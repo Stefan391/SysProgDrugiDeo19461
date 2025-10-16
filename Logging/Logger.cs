@@ -8,20 +8,27 @@ namespace SysProgDrugiDeo19461.Logging
 {
     public static class Logger
     {
+        static object consoleLock = new object();
         public static void Log(string msg)
         {
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine(msg);
+            lock (consoleLock)
+            {
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine(msg);
+            }
         }
 
         public static void Error(string msg)
         {
-            ConsoleColor org = Console.ForegroundColor;
-            Console.ForegroundColor = ConsoleColor.Red;
+            lock (consoleLock)
+            {
+                ConsoleColor org = Console.ForegroundColor;
+                Console.ForegroundColor = ConsoleColor.Red;
 
-            Console.WriteLine($"ERR: {msg}");
+                Console.WriteLine($"ERR: {msg}");
 
-            Console.ForegroundColor = org;
+                Console.ForegroundColor = org;
+            }
         }
     }
 }
